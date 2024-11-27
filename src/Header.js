@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CartContext } from './CartContext'; // Import the CartContext to access cart items
 
 const Header = () => {
+    const { cart } = useContext(CartContext); // Get cart items from context
+    const navigate = useNavigate(); // To navigate to the Cart page
+
+    const handleViewCart = () => {
+        navigate('/cart'); // Redirect to the cart page
+    };
+
     return (
         <header style={styles.header}>
             <div style={styles.logoContainer}>
@@ -9,12 +18,25 @@ const Header = () => {
                     alt="Company Logo"
                     style={styles.logo}
                 />
-                <h1 style={styles.companyName}>Asalkar Healthy Hub</h1>
+                <h1 style={styles.companyName}> Healthy Hub</h1>
             </div>
             <nav>
                 <ul style={styles.navList}>
                     <li><a href="#about" style={styles.navLink}>About Us</a></li>
                     <li><a href="#contact" style={styles.navLink}>Contact</a></li>
+                    {/* View Cart Button */}
+                    <li style={styles.cartContainer}>
+    <div style={styles.cartWrapper}>
+        <span style={styles.cartCount}>{cart.length}</span>
+        <img
+            src="/cartlogo.png" // Replace with the actual path to your cart image
+            alt="View Cart"
+            style={styles.cartImage}
+            onClick={handleViewCart}
+        />
+    </div>
+</li>
+
                 </ul>
             </nav>
         </header>
@@ -40,6 +62,33 @@ const styles = {
         height: '60px',
         borderRadius: '10%', // Optional: Keeps it slightly rounded
     },
+    cartContainer: {
+        position: 'relative',
+        display: 'inline-block',
+    },
+    cartWrapper: {
+        position: 'relative',
+        width: '40px',
+        height: '40px',
+        cursor: 'pointer',
+    },
+    cartCount: {
+        position: 'absolute',
+        top: '-8px', // Adjust to place it above the cart icon
+        right: '-8px', // Adjust to align correctly
+        backgroundColor: 'black',
+        color: 'white',
+        fontSize: '12px',
+        fontWeight: 'bold',
+        borderRadius: '50%',
+        padding: '4px 6px',
+        textAlign: 'center',
+        minWidth: '20px', // Ensures consistent circle size
+    },
+    cartImage: {
+        width: '100%', // Ensures it fits the wrapper
+        height: '100%',
+    },
     companyName: {
         margin: 0,
         fontSize: '24px', // Slightly larger text for the company name
@@ -55,6 +104,17 @@ const styles = {
         color: '#fff',
         textDecoration: 'none',
         fontSize: '16px', // Adjust font size for better readability
+    },
+    viewCartButton: {
+        backgroundColor: '#ffc107',
+        color: '#333',
+        border: 'none',
+        padding: '10px 20px',
+        fontSize: '16px',
+        cursor: 'pointer',
+        borderRadius: '5px',
+        display: 'flex',
+        alignItems: 'center',
     },
 };
 

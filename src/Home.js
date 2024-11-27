@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ProductVariants from './ProductVariants';
+
 
 const Home = () => {
     const [productCategories, setProductCategories] = useState([]);
@@ -11,7 +11,7 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://10.210.5.150:9090/products');
+                const response = await fetch('http://localhost:9090/products');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

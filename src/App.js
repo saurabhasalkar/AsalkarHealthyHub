@@ -4,29 +4,29 @@ import Footer from './Footer';
 import Header from './Header';
 import Home from './Home';
 import ProductVariants from './ProductVariants';
+import { CartProvider } from './CartContext';
+import Cart from './Cart';
 
 const App = () => {
     return (
-        <Router>
-            <div style={styles.appContainer}>
-                {/* Header is always displayed */}
-                <Header />
-
-                {/* Dynamic Routes */}
-                <main style={styles.mainContent}>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/productvariants/:productId" element={<ProductVariants />} ></Route>
-                        {/* Add more routes as needed */}
-                    </Routes>
-                </main>
-
-                {/* Footer is always displayed */}
-                <Footer />
-            </div>
-        </Router>
+        <CartProvider>
+            <Router>
+                <div style={styles.appContainer}>
+                    <Header />
+                    <main style={styles.mainContent}>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/productvariants/:productId" element={<ProductVariants />} />
+                            <Route path="/cart" element={<Cart />} />
+                        </Routes>
+                    </main>
+                    <Footer />
+                </div>
+            </Router>
+        </CartProvider>
     );
 };
+
 
 const styles = {
     appContainer: {
