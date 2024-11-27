@@ -16,7 +16,7 @@ const App = () => {
                 <main style={styles.mainContent}>
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/productvariants/:id" element={<ProductVariants />} ></Route>
+                        <Route path="/productvariants/:productId" element={<ProductVariants />} ></Route>
                         {/* Add more routes as needed */}
                     </Routes>
                 </main>

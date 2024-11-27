@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-const ProductVariants = ({ productId, onBack }) => {
+const ProductVariants = ({ onBack }) => {
+    const { productId } = useParams();
     const [variants, setVariants] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -74,6 +76,7 @@ const ProductVariants = ({ productId, onBack }) => {
                             />
                             <h3 style={styles.variantName}>{variant.name}</h3>
                             <p style={styles.variantDescription}>{variant.description}</p>
+                            <p style={styles.variantPrice}>Size: {variant.quantity}</p>
                             <p style={styles.variantPrice}>Price: ₹{variant.price}</p>
                             <p style={styles.variantStock}>Stock: {variant.stock_quantity}</p>
                             <div style={styles.quantityContainer}>
