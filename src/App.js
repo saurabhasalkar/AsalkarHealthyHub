@@ -1,11 +1,12 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import AboutUs from './AboutUs';
+import Cart from './Cart';
+import { CartProvider } from './CartContext';
 import Footer from './Footer';
 import Header from './Header';
 import Home from './Home';
 import ProductVariants from './ProductVariants';
-import { CartProvider } from './CartContext';
-import Cart from './Cart';
 
 const App = () => {
     return (
@@ -18,6 +19,7 @@ const App = () => {
                             <Route path="/" element={<Home />} />
                             <Route path="/productvariants/:productId" element={<ProductVariants />} />
                             <Route path="/cart" element={<Cart />} />
+                            <Route path="/aboutus" element={<AboutUs />} />
                         </Routes>
                     </main>
                     <Footer />

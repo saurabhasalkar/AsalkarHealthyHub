@@ -10,6 +10,10 @@ const Header = () => {
         navigate('/cart'); // Redirect to the cart page
     };
 
+    const handleAboutUs = () => {
+        navigate('/aboutus'); // Redirect to the cart page
+    };
+
     return (
         <header style={styles.header}>
             <div style={styles.logoContainer}>
@@ -22,20 +26,20 @@ const Header = () => {
             </div>
             <nav>
                 <ul style={styles.navList}>
-                    <li><a href="#about" style={styles.navLink}>About Us</a></li>
+                    <li><a href="/aboutus" style={styles.navLink}>About Us</a></li>
                     <li><a href="#contact" style={styles.navLink}>Contact</a></li>
                     {/* View Cart Button */}
                     <li style={styles.cartContainer}>
-    <div style={styles.cartWrapper}>
-        <span style={styles.cartCount}>{cart.length}</span>
-        <img
-            src="/cartlogo.png" // Replace with the actual path to your cart image
-            alt="View Cart"
-            style={styles.cartImage}
-            onClick={handleViewCart}
-        />
-    </div>
-</li>
+                        <div style={styles.cartWrapper}>
+                            <span style={styles.cartCount}>{cart.length}</span>
+                            <img
+                                src="/cartlogo.png" // Replace with the actual path to your cart image
+                                alt="View Cart"
+                                style={styles.cartImage}
+                                onClick={handleViewCart}
+                            />
+                        </div>
+                    </li>
 
                 </ul>
             </nav>
