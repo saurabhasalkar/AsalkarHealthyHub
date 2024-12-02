@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import './Home.css'; // Import the CSS file
 
 const Home = () => {
     const [productCategories, setProductCategories] = useState([]);
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true); // Added loading state
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,9 +19,9 @@ const Home = () => {
                 setProductCategories(data);
             } catch (error) {
                 console.error('Error fetching products:', error);
-                setError('Failed to load products. Please try again later.');
+                setError('We encountered an issue while loading our product categories. Please refresh the page or try again later.');
             } finally {
-                setLoading(false); // Ensure loading stops after fetch
+                setLoading(false);
             }
         };
 
@@ -29,97 +29,57 @@ const Home = () => {
     }, []);
 
     const handleProductClick = (productId) => {
-        navigate(`/productvariants/${productId}`); // Fixed string interpolation
+        navigate(`/productvariants/${productId}`);
     };
 
     return (
-        <main style={styles.main}>
-            <section style={styles.productsSection}>
-                <h1 style={styles.heading}>Our Product Categories</h1>
+        <main className="home-main">
+            <section className="products-section">
+                <h1 className="heading">Explore Our Product Categories</h1>
                 {loading ? (
-                    <p style={styles.loading}>Loading products...</p> // Display loading message
+                    <p className="loading">Fetching the best for you...</p>
                 ) : error ? (
-                    <p style={styles.error}>{error}</p> // Display error message
+                    <p className="error">{error}</p>
                 ) : (
-                    <div style={styles.productsContainer}>
+                    <div className="products-container">
                         {productCategories.map((category) => (
                             <div
                                 key={category.id}
-                                style={styles.productCard}
+                                className="product-card"
                                 onClick={() => handleProductClick(category.id)}
-                                role="button" // Accessibility role
-                                tabIndex="0" // Make div focusable
-                                aria-label={`View products in ${category.name}`}>
+                                role="button"
+                                tabIndex="0"
+                                aria-label={`View products in ${category.name}`}
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter') handleProductClick(category.id);
+                                }}
+                            >
                                 <img
                                     src={`data:image/jpeg;base64,${category.image}`}
                                     alt={category.name}
-                                    style={styles.productImage}
+                                    className="product-image"
                                 />
-                                <h2 style={styles.productName}>{category.name}</h2>
-                                <p style={styles.productDescription}>{category.description}</p>
+                                <h2 className="product-name">{category.name}</h2>
+                                <p className="product-description">{category.description}</p>
                             </div>
                         ))}
                     </div>
                 )}
             </section>
-            <section style={styles.whySection}>
-                <h2 style={styles.heading}>Why Use Cold Pressed Oil?</h2>
-                <p style={styles.description}>
-                    At Asalkar Healthy Hub, we are committed to providing you with the purest and most nutritious oils
-                    for your everyday cooking. Our Cold-Pressed Oils are extracted using the traditional cold-pressing
-                    method, which ensures that every drop is packed with essential nutrients, antioxidants, and
-                    vitamins. Unlike refined oils, which are processed with chemicals and high heat, our cold-pressed
-                    oils retain their natural flavor and nutritional value, making them a healthier and tastier choice
-                    for your family. Rich in heart-healthy fats like omega-3 and omega-6 fatty acids, our oils are
-                    perfect for maintaining a balanced diet while enhancing the taste of your dishes. Whether you’re
-                    frying, sautéing, or making dressings, our oils are ideal for low to medium heat cooking and offer a
-                    fresh, natural flavor. Plus, they are free from harmful chemicals and preservatives, giving you an
-                    oil that is as pure and natural as nature intended. Available in sunflower oil, groundnut oil,
-                    safflower oil, and coconut oil, each in sizes ranging from 500ml to 5 liters, our cold-pressed oils
-                    are the perfect addition to any kitchen. Choose Asalkar Healthy Hub for a healthier, tastier, and
-                    more sustainable way to cook.
+            <section className="why-section">
+                <h2 className="heading">Why Choose Our Cold-Pressed Oils?</h2>
+                <p className="description">
+                    At **Asalkar Healthy Hub**, we pride ourselves on delivering premium, unrefined cold-pressed oils tailored to your health and culinary needs. Our oils are crafted using traditional cold-pressing techniques, ensuring that essential nutrients, antioxidants, and vitamins remain intact.
+                </p>
+                <p className="description">
+                    Perfect for low to medium heat cooking, our oils enhance your meals with natural goodness and taste. Rich in omega-3 and omega-6 fatty acids, they support a balanced diet while elevating your culinary creations. Available in variants like sunflower, groundnut, safflower, and coconut oil, our products cater to diverse preferences and sizes from 500ml to 5 liters.
+                </p>
+                <p className="description">
+                    Choose Asalkar Healthy Hub for quality you can trust, a healthier lifestyle, and flavors that stand out.
                 </p>
             </section>
         </main>
     );
-};
-
-const styles = {
-    main: { padding: '20px', backgroundColor: '#f9f9f9' },
-    heading: { textAlign: 'center', margin: '20px 0', fontSize: '24px', color: '#333' },
-    productsSection: { marginBottom: '40px' },
-    productsContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '20px',
-        flexWrap: 'wrap',
-    },
-    productCard: {
-        width: '200px',
-        textAlign: 'center',
-        cursor: 'pointer',
-        padding: '10px',
-        backgroundColor: '#fff',
-        borderRadius: '10px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        transition: 'transform 0.2s, box-shadow 0.2s',
-    },
-    productCardHover: {
-        transform: 'scale(1.05)',
-        boxShadow: '0 6px 10px rgba(0, 0, 0, 0.15)',
-    },
-    productImage: {
-        width: '100px',
-        height: '100px',
-        borderRadius: '50%',
-        objectFit: 'cover',
-        margin: '0 auto 10px',
-        border: '2px solid #ddd',
-    },
-    productName: { fontSize: '16px', color: '#333' },
-    productDescription: { fontSize: '12px', color: '#666' },
-    loading: { fontSize: '16px', textAlign: 'center', color: '#555' },
-    error: { color: 'red', textAlign: 'center', fontSize: '14px' },
 };
 
 export default Home;

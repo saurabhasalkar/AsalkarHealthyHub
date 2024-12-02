@@ -7,6 +7,7 @@ import Footer from './Footer';
 import Header from './Header';
 import Home from './Home';
 import ProductVariants from './ProductVariants';
+import OrderConfirmation from './OrderConfirmation';
 
 const App = () => {
     return (
@@ -20,6 +21,8 @@ const App = () => {
                             <Route path="/productvariants/:productId" element={<ProductVariants />} />
                             <Route path="/cart" element={<Cart />} />
                             <Route path="/aboutus" element={<AboutUs />} />
+                            <Route path="/order-confirmation" element={<OrderConfirmation />} />
+
                         </Routes>
                     </main>
                     <Footer />

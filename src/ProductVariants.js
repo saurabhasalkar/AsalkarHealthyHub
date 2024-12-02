@@ -126,7 +126,10 @@ const ProductVariants = () => {
                                 <h3 style={styles.variantName}>{variant.description}</h3>
                                 <p style={styles.variantDescription}>{variant.quantity}</p>
                                 <p style={styles.variantPrice}>Price: ₹{variant.price}</p>
-                                <p style={styles.variantStock}>Stock: {variant.stockQuantity}</p>
+                                <p style={styles.variantStock}>
+    {variant.stockQuantity > 1 ? "In Stock:"+variant.stockQuantity : "Not in Stock"}
+</p>
+
                                 <div style={styles.quantityContainer}>
                                     <button
                                         style={styles.quantityButton}
