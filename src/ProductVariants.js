@@ -1,18 +1,23 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { CartContext } from './CartContext';
 
 const ProductVariants = () => {
     const { productId } = useParams();
     const navigate = useNavigate();
+    const location = useLocation(); // For getting the current path
     const { addToCart } = useContext(CartContext);
     const [variants, setVariants] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [quantities, setQuantities] = useState({});
-    const [hoveredImage, setHoveredImage] = useState(null); // Track hovered image for zoom
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Check login status
 
     useEffect(() => {
+        // Check login status from localStorage or authentication context
+        const token = localStorage.getItem('token');
+        setIsLoggedIn(!!token); // If token exists, user is logged in
+
         const fetchVariants = async () => {
             try {
                 const response = await fetch(`http://localhost:9090/productvariants/${productId}`);
@@ -42,45 +47,33 @@ const ProductVariants = () => {
         fetchVariants();
     }, [productId]);
 
-    const handleMouseEnter = (variantId) => {
-        setHoveredImage(variantId); // Set hovered image ID
+    const handleAddToCart = (variant) => {
+        if (!isLoggedIn) {
+            // Show alert if not logged in
+            const proceedToLogin = window.confirm(
+                'Please log in to add items to your cart. Click OK to go to the login page.'
+            );
+            if (proceedToLogin) {
+                // Redirect to login page and pass the current page in state
+                navigate('/login', { state: { from: location.pathname } });
+            }
+            return;
+        }
+
+        // Add the product variant to the cart if logged in
+        addToCart({ ...variant, quantity: quantities[variant.variantId] });
     };
-
-    const handleMouseLeave = () => {
-        setHoveredImage(null); // Reset hovered image
-    };
-
-    const handleMouseMove = (e, imageRef) => {
-        if (!imageRef) return;
-
-        const { left, top, width, height } = imageRef.getBoundingClientRect();
-        const x = ((e.pageX - left) / width) * 100; // Calculate x percentage
-        const y = ((e.pageY - top) / height) * 100; // Calculate y percentage
-
-        // Apply zoom effect to a new div
-        setZoomStyle({
-            backgroundImage: `url(${imageRef.src})`,
-            backgroundPosition: `${x}% ${y}%`,
-            backgroundSize: `${width * 3}px ${height * 3}px`, // Increased zoom for clarity
-            display: 'block',
-        });
-    };
-
-    const [zoomStyle, setZoomStyle] = useState(null); // For zoom effect
 
     const handleQuantityChange = (variantId, value) => {
         const parsedValue = parseInt(value, 10); // Parse the input to ensure it's an integer
 
         if (isNaN(parsedValue)) return; // Ignore invalid input
 
-        // Helper function to get clamped value
         const getClampedValue = (value, min, max) => Math.min(Math.max(value, min), max);
 
-        // Find the variant to get its stock quantity
         const variant = variants.find((v) => v.variantId === variantId);
         const stockLimit = variant?.stockQuantity || 1;
 
-        // Update the state
         setQuantities((prevQuantities) => ({
             ...prevQuantities,
             [variantId]: getClampedValue(parsedValue, 1, stockLimit),
@@ -102,34 +95,20 @@ const ProductVariants = () => {
                 ) : variants.length > 0 ? (
                     variants.map((variant) => (
                         <div key={variant.variantId} style={styles.variantCard}>
-                            <div
-                                style={styles.imageWrapper}
-                                onMouseEnter={() => handleMouseEnter(variant.variantId)}
-                                onMouseLeave={handleMouseLeave}
-                                onMouseMove={(e) =>
-                                    hoveredImage === variant.variantId
-                                        ? handleMouseMove(e, e.target)
-                                        : null
-                                }
-                            >
+                            <div style={styles.imageWrapper}>
                                 <img
                                     src={`data:image/jpeg;base64,${variant.image}`}
                                     alt={variant.name}
                                     style={styles.variantImage}
                                 />
-                                {hoveredImage === variant.variantId && zoomStyle && (
-                                    <div style={{ ...styles.zoomLens, ...zoomStyle }} />
-                                )}
                             </div>
                             <div style={styles.variantDetails}>
                                 <h3 style={styles.variantName}>{variant.product.name}</h3>
                                 <h3 style={styles.variantName}>{variant.description}</h3>
-                                <p style={styles.variantDescription}>{variant.quantity}</p>
                                 <p style={styles.variantPrice}>Price: ₹{variant.price}</p>
                                 <p style={styles.variantStock}>
-    {variant.stockQuantity > 1 ? "In Stock:"+variant.stockQuantity : "Not in Stock"}
-</p>
-
+                                    {variant.stockQuantity > 1 ? `In Stock: ${variant.stockQuantity}` : "Not in Stock"}
+                                </p>
                                 <div style={styles.quantityContainer}>
                                     <button
                                         style={styles.quantityButton}
@@ -158,7 +137,7 @@ const ProductVariants = () => {
                                 </div>
                                 <button
                                     style={styles.addToCartButton}
-                                    onClick={() => addToCart({ ...variant, quantity: quantities[variant.variantId] })}
+                                    onClick={() => handleAddToCart(variant)}
                                 >
                                     Add to Cart
                                 </button>
