@@ -27,7 +27,7 @@ const Header = () => {
             <nav>
                 <ul style={styles.navList}>
                     <li><a href="/aboutus" style={styles.navLink}>About Us</a></li>
-                    <li><a href="#contact" style={styles.navLink}>Contact</a></li>
+                    <li><a href="/contactus" style={styles.navLink}>Contact</a></li>
                     {/* View Cart Button */}
                     <li style={styles.cartContainer}>
                         <div style={styles.cartWrapper}>

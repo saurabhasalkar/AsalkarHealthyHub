@@ -3,11 +3,12 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AboutUs from './AboutUs';
 import Cart from './Cart';
 import { CartProvider } from './CartContext';
+import ContactUs from './ContactUs';
 import Footer from './Footer';
 import Header from './Header';
 import Home from './Home';
-import ProductVariants from './ProductVariants';
 import OrderConfirmation from './OrderConfirmation';
+import ProductVariants from './ProductVariants';
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                             <Route path="/productvariants/:productId" element={<ProductVariants />} />
                             <Route path="/cart" element={<Cart />} />
                             <Route path="/aboutus" element={<AboutUs />} />
+                            <Route path="/contactus" element={<ContactUs />} />
                             <Route path="/order-confirmation" element={<OrderConfirmation />} />
 
                         </Routes>
